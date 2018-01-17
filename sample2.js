@@ -6,12 +6,14 @@ var ip2loc = require("ip2location-nodejs");
 function respond(req, res, next) {
   ip2loc.IP2Location_init("/home/ec2-user/cc1718_ip2loc/data/IP2LOCATION-SAMPLE-DB24.BIN");
 
-  tmp  = "";
+  tmp  = "{";
   result = ip2loc.IP2Location_get_all(req.params.ip);
   for (var key in result) {
-      tmp += key + ": " + result[key] + "\n";
+      tmp +="{\"" + key + "\": \"" + result[key] + "\"},";
   }
-  res.send(tmp);
+  tmp = tmp.slice(0, -1); 
+  tmp += "}"; 
+  res.json(tmp);
 
   next();
 }
